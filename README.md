@@ -25,33 +25,94 @@ In your project's Gruntfile, add a section named `insertConfig` to the data obje
 ```js
 grunt.initConfig({
   insertConfig: {
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
-  },
-});
-```
-
-
-### Usage Examples
-
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
-```js
-grunt.initConfig({
-  insertConfig: {
-    test: {
-      src: 'test/main.js',
-      dest: 'tmp/main.js',
-      insertNode: 'paths',
-      insertModule: {
-        'flight_core/list/list': 'http://xxxx.com/xxx/flight_core/list/list'
+    dev: {
+      src: ['test/main.js'],
+      dest: ['tmp/main.js'],
+      insertModules: {
+        paths: {
+            'flight_core/list/list': 'http://xxxx.com/xxx/flight_core/list/list'
+        },
+        baseUrl: '://www.qunar.com/'
       }
     },
-  },
+    dist: {
+      src: ['tmp/main.js'],
+      srcReg: [new RegExp('^tmp/\\w*/\\w*(\.js)$')],
+      insertModules: {
+          paths: {},
+          baseUrl: '://www.qunar.com/'
+      },
+      replaceReg: [new RegExp('^tmp/'),new RegExp('\.js$')]
+    }
+   }
 });
 ```
+
+
+#### Default Options
+```js
+options: {
+  startKey: 'require.config(',
+  endKey: ')'
+}
+if no insertModule,then use grunt.filerev.summary
+
+if have srcReg,then filter insertModules
+
+if have dest,use it,if not,use src
+```
+
+### Usage Examples
+```js
+grunt.initConfig({
+  copy: {
+    dist: {
+      expand: true,
+      cwd: 'test/',
+      src: '**',
+      dest: 'tmp/'
+    }
+  },
+  filerev: {
+    options: {
+      algorithm: 'md5',
+      length: 8
+    },
+    dist: {
+      files: [{
+        src: [
+            'tmp/**/*.js',
+            '**/*.css'
+        ]
+      }]
+    }
+  },
+  insertConfig: {
+    dev: {
+      src: ['test/main.js'],
+      dest: ['tmp/main.js'],
+      insertModules: {
+        paths: {
+          'flight_core/list/list': 'http://xxxx.com/xxx/flight_core/list/list'
+        },
+        baseUrl: '://www.xxx.com/'
+      }
+    },
+    dist: {
+      src: ['tmp/main.js'],
+      srcReg: [new RegExp('^tmp/\\w*/\\w*(\.js)$')],
+      insertModules: {
+        paths: {},
+        baseUrl: '://www.xxx.com/'
+      },
+      replaceReg: [new RegExp('^tmp/'),new RegExp('\.js$')]
+    }
+  }
+});
+
+```
+
+
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).

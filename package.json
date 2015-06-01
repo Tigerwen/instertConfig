@@ -1,7 +1,7 @@
 {
   "name": "grunt-insert-config",
   "description": "require config insert",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "homepage": "https://github.com/Tigerwen/instertConfig",
   "author": {
     "name": "wenxiang.hu",
@@ -30,6 +30,8 @@
     "grunt-contrib-jshint": "^0.9.2",
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-nodeunit": "^0.3.3",
+    "grunt-filerev": "2.3.1",
+    "grunt-contrib-copy": "0.8.0",
     "grunt": "~0.4.5"
   },
   "peerDependencies": {
